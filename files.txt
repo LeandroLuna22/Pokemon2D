@@ -1,0 +1,42 @@
+/game-2d
+│
+├── index.html
+├── style.css
+├── main.js              # ponto de entrada do jogo
+│
+├── /core                # motor do jogo
+│   ├── Game.js
+│   ├── Renderer.js
+│   ├── Input.js
+│   ├── Physics.js
+│   ├── SceneManager.js
+│
+├── /entities            # personagens e objetos
+│   ├── Player.js
+│   ├── Enemy.js
+│   ├── NPC.js
+│   ├── Projectile.js
+│
+├── /scenes              # telas do jogo
+│   ├── MenuScene.js
+│   ├── Level1.js
+│   ├── Level2.js
+│   ├── GameOverScene.js
+│
+├── /levels              # dados das fases
+│   ├── level1.json
+│   ├── level2.json
+│
+├── /assets
+│   ├── /images
+│   ├── /sprites
+│   ├── /audio
+│   ├── /fonts
+│
+├── /utils               # funções auxiliares
+│   ├── Collision.js
+│   ├── MathHelper.js
+│   ├── Loader.js
+│
+└── /config              # configurações globais
+    ├── gameConfig.js
