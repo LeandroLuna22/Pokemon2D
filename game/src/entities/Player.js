@@ -1,3 +1,4 @@
+//Player.js
 import { GRAVITY } from "../config/gameConfig.js";
 import { world } from "../world/World.js";
 import { checkPlatformCollision } from "../utils/Collision.js";
@@ -56,9 +57,12 @@ export default class Player {
 
         this.gameFrame = 0;
         this.staggerFrames = 6;
+
     }
 
     update(input, platforms) {
+
+        this.prevY = this.y;
 
         this.vx = 0;
 
@@ -77,10 +81,21 @@ export default class Player {
             this.onGround = false;
         }
 
-        this.vy += GRAVITY;
+        // aplica gravidade
+this.vy += GRAVITY;
 
-        this.x += this.vx;
-        this.y += this.vy;
+// salva posição anterior
+this.prevX = this.x;
+this.prevY = this.y;
+
+// move no eixo X
+this.x += this.vx;
+checkPlatformCollision(this, platforms, "x");
+
+// move no eixo Y
+this.y += this.vy;
+checkPlatformCollision(this, platforms, "y");
+
 
         checkPlatformCollision(this, platforms);
 
