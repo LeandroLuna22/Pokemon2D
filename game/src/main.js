@@ -30,10 +30,11 @@ mountains.src = "/game/assets/images/mountains.png";
 
 /* ================= PARALLAX LAYERS ================= */
 const layers = [
-    { image: sky, speed: 0.1 },
-    { image: clouds, speed: 0.3 },
-    { image: mountains, speed: 0.5 }
+    { image: sky,       speed: 0.05, auto: 0     }, // céu parado
+    { image: clouds,    speed: 0.15, auto: 0.6   }, // nuvens vivas ☁️
+    { image: mountains, speed: 0.4,  auto: 0     }  // montanhas
 ];
+
 
 /* ================= ENTIDADES ================= */
 const birds = [

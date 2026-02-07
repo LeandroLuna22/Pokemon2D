@@ -9,12 +9,19 @@ export default class Game {
         this.birds = birds;
     }
 
-    update() {
+   update() {
     this.player.update(this.input, this.platforms);
+
+    // 🎥 FAZ A CÂMERA SEGUIR O PLAYER
+    this.camera.update(this.player);
+
+    // 🌤️ parallax vivo
     this.renderer.update();
 
+    // 🐦 pássaros
     this.birds.forEach(bird => bird.update());
 }
+
 
 
     draw() {

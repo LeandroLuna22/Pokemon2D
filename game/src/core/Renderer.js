@@ -8,22 +8,25 @@ export default class Renderer {
     }
 
     update() {
-    this.backgroundOffset += 0.0;
+    this.backgroundOffset += 1.25;
     if (this.backgroundOffset > 100000) {
         this.backgroundOffset = 0;
     }
 }
 
 
-    drawLayer(image, speed, cameraX) {
-        const bgX = (-cameraX * speed) - this.backgroundOffset * speed;
-        const imgWidth = image.width;
+    drawLayer(image, speed, cameraX, autoSpeed = 0) {
+    const imgWidth = image.width;
 
-        let x = bgX % imgWidth;
+    const x =
+        (-cameraX * speed) -
+        (this.backgroundOffset * autoSpeed);
 
-        this.ctx.drawImage(image, x, 0, imgWidth, GAME_HEIGHT);
-        this.ctx.drawImage(image, x + imgWidth, 0, imgWidth, GAME_HEIGHT);
-    }
+    let drawX = x % imgWidth;
+
+    this.ctx.drawImage(image, drawX, 0, imgWidth, GAME_HEIGHT);
+    this.ctx.drawImage(image, drawX + imgWidth, 0, imgWidth, GAME_HEIGHT);
+}
 
     draw(camera, player, platforms, birds) {
 
@@ -35,10 +38,12 @@ export default class Renderer {
             this.layers.forEach(layer => {
                 if (layer.image.complete) {
                     this.drawLayer(
-                        layer.image,
-                        layer.speed,
-                        camera.x
-                );
+                    layer.image,
+                    layer.speed,
+                    camera.x,
+                    layer.auto
+            );
+
             }
         });
     }
