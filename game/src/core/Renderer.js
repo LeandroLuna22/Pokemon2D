@@ -1,51 +1,64 @@
 import { GAME_WIDTH, GAME_HEIGHT } from "../config/gameConfig.js";
 
 export default class Renderer {
-
-    constructor(ctx, backgroundImg) {
+    constructor(ctx, layers) {
         this.ctx = ctx;
-        this.backgroundImg = backgroundImg;
+        this.layers = layers;
+        this.backgroundOffset = 0;
     }
 
-    draw(camera, player, platforms) {
-
-        this.ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-        if (this.backgroundImg.complete) {
-            this.ctx.drawImage(this.backgroundImg, 0, 0, GAME_WIDTH, GAME_HEIGHT);
-        } else {
-            this.ctx.fillStyle = "rgb(180, 180, 224)";
-            this.ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-        }
-
-        this.ctx.save();
-        this.ctx.translate(-camera.x, 0);
-
-        this.ctx.fillStyle = "#59b377";
-        platforms.forEach(p => this.ctx.fillRect(p.x, p.y, p.w, p.h));
-
-        this.ctx.save();
-
-        if (player.facing === "left") {
-            this.ctx.translate(player.x + player.w / 2, 0);
-            this.ctx.scale(-1, 1);
-            this.ctx.translate(-(player.x + player.w / 2), 0);
-        }
-
-        this.ctx.drawImage(
-            player.img,
-            player.frameX * player.spriteW,
-            player.frameY * player.spriteH,
-            player.spriteW,
-            player.spriteH,
-            player.x,
-            player.y,
-            player.w,
-            player.h
-        );
-
-        this.ctx.restore();
-        this.ctx.restore();
+    update() {
+    this.backgroundOffset += 0.0;
+    if (this.backgroundOffset > 100000) {
+        this.backgroundOffset = 0;
     }
 }
 
+
+    drawLayer(image, speed, cameraX) {
+        const bgX = (-cameraX * speed) - this.backgroundOffset * speed;
+        const imgWidth = image.width;
+
+        let x = bgX % imgWidth;
+
+        this.ctx.drawImage(image, x, 0, imgWidth, GAME_HEIGHT);
+        this.ctx.drawImage(image, x + imgWidth, 0, imgWidth, GAME_HEIGHT);
+    }
+
+    draw(camera, player, platforms, birds) {
+
+        // limpa tela
+        this.ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+        // 🌤️ parallax layers
+        if (this.layers) {
+            this.layers.forEach(layer => {
+                if (layer.image.complete) {
+                    this.drawLayer(
+                        layer.image,
+                        layer.speed,
+                        camera.x
+                );
+            }
+        });
+    }
+
+        // 🎥 mundo com câmera
+        this.ctx.save();
+        this.ctx.translate(-camera.x, 0);
+
+        // plataformas
+        this.ctx.fillStyle = "#362108";
+        platforms.forEach(p => {
+            this.ctx.fillRect(p.x, p.y, p.w, p.h);
+        });
+
+        // player (responsável por seu próprio draw)
+        player.draw(this.ctx);
+
+        // 🐦 pássaros
+        birds.forEach(bird => bird.draw(this.ctx));
+
+        this.ctx.restore();
+    }
+}

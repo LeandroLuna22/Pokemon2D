@@ -1,5 +1,5 @@
 export const world = {
-    width: 2000,
+    width: 5000,
     height: 720
 };
 

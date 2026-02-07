@@ -4,6 +4,31 @@ import { checkPlatformCollision } from "../utils/Collision.js";
 
 export default class Player {
 
+    draw(ctx) {
+    ctx.save();
+
+    if (this.facing === "left") {
+        ctx.translate(this.x + this.w / 2, 0);
+        ctx.scale(-1, 1);
+        ctx.translate(-(this.x + this.w / 2), 0);
+    }
+
+    ctx.drawImage(
+        this.img,
+        this.frameX * this.spriteW,
+        this.frameY * this.spriteH,
+        this.spriteW,
+        this.spriteH,
+        this.x,
+        this.y,
+        this.w,
+        this.h
+    );
+
+    ctx.restore();
+}
+
+
     constructor(img) {
 
         this.img = img;

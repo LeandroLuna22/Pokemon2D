@@ -1,4 +1,6 @@
 export const GAME_WIDTH = 1280;
 export const GAME_HEIGHT = 720;
 export const GRAVITY = 0.6;
+export const PARALLAX_SPEED = 0.5;
+
 
